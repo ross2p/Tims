@@ -2,6 +2,7 @@ import React from "react";
 import FunctionalDistribution from "./functionalDistribution";
 import "../App.css";
 import CastomChart from "./CastomChart";
+import LineChart from "./LineChart";
 export default function FrequencyTable({ data }) {
   const countMap = new Map();
   const variationSeries = [...data[1]];
@@ -70,13 +71,20 @@ export default function FrequencyTable({ data }) {
           </tr>
         </tbody>
       </table>
-      <FunctionalDistribution
-        data={data}
-        keys={keys}
-        frequencies={frequencies}
-      />
-      <div style={{ height: "500px", width: "500px" }}>
-        <CastomChart x={keys} y={counts} />
+      <div style={{ flexDirection: "row" }}>
+        <FunctionalDistribution
+          data={data}
+          keys={keys}
+          frequencies={frequencies}
+        />
+        <div>
+          <div style={{ width: "50%" }}>
+            <CastomChart x={keys} y={counts} />
+          </div>
+          <div style={{ width: "50%" }}>
+            <LineChart x={keys} y={counts} />
+          </div>
+        </div>
       </div>
     </div>
   );

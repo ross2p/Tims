@@ -9,7 +9,7 @@ const Chart = ({ x, y }) => {
     labels: x,
     datasets: [
       {
-        label: "Горизонтальні відрізки",
+        label: "Полігон частот",
         fill: false,
         lineTension: 0.1,
         backgroundColor: "rgba(75,192,192,0.4)",
@@ -53,7 +53,7 @@ const Chart = ({ x, y }) => {
 
   return (
     <div>
-      <h2>Горизонтальні відрізки (Line)</h2>
+      <h2>Полігон Частот</h2>
       <Line data={data} width={100} height={50} options={options} />
     </div>
   );
