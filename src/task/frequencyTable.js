@@ -1,6 +1,7 @@
 import React from "react";
+import FunctionalDistribution from "./functionalDistribution";
 import "../App.css";
-
+import CastomChart from "./CastomChart";
 export default function FrequencyTable({ data }) {
   const countMap = new Map();
   const variationSeries = [...data[1]];
@@ -20,35 +21,63 @@ export default function FrequencyTable({ data }) {
     countMap.set(key, { count: value, relativeFrequency: relativeFrequency });
   });
 
-  const keys = Array.from(countMap.keys());
-  const counts = keys.map((key) => countMap.get(key).count);
-  const frequencies = keys.map((key) => countMap.get(key).relativeFrequency);
+  var keys = Array.from(countMap.keys());
+  var counts = keys.map((key) => countMap.get(key).count);
+  var frequencies = keys.map((key) => countMap.get(key).relativeFrequency);
+  const sumCounts = counts.reduce((total, current) => total + current, 0);
+  const sumFrequencies = frequencies
+    .reduce((total, current) => total + current, 0)
+    .toFixed(3);
+  var combinedArray = keys.map((key, index) => ({
+    key: key,
+    count: counts[index],
+    frequency: frequencies[index],
+  }));
 
+  // Сортування масиву за значенням ключа
+  combinedArray.sort((a, b) => a.key - b.key);
+
+  // Розпакування відсортованих значень назад у відповідні масиви
+  keys = combinedArray.map((item) => item.key);
+  counts = combinedArray.map((item) => item.count);
+  frequencies = combinedArray.map((item) => item.frequency);
   return (
     <div className="App">
-      <h2>Частоти та відносні ймовірності</h2>
+      <h3>Частоти та відносні ймовірності</h3>
       <table>
         <tbody>
           <tr>
-            <td>Значення</td>
+            <td className="tablefreq">Значення</td>
             {keys.map((key, index) => (
-              <td>{key}</td>
+              <td className="tableElement">{key}</td>
             ))}
+            <td className="tablefreq">Сума</td>
           </tr>
           <tr>
-            <td>Частота</td>
+            <td className="tablefreq">Частота</td>
             {counts.map((key, index) => (
-              <td>{key}</td>
+              <td className="tableElement">{key}</td>
             ))}
+            <td className="tablefreq">{sumCounts}</td>
           </tr>
           <tr>
-            <td>Відносна частота</td>
+            <td className="tablefreq">Відносна частота</td>
             {frequencies.map((key, index) => (
-              <td>{key}</td>
+              <td className="tableElement">{key}</td>
             ))}
+
+            <td className="tablefreq">{sumFrequencies}</td>
           </tr>
         </tbody>
       </table>
+      <FunctionalDistribution
+        data={data}
+        keys={keys}
+        frequencies={frequencies}
+      />
+      <div style={{ height: "500px", width: "500px" }}>
+        <CastomChart x={keys} y={counts} />
+      </div>
     </div>
   );
 }

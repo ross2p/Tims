@@ -3,7 +3,7 @@ import InputFile from "./task/inputFile";
 import Condition from "./task/condition";
 import VariationSeries from "./task/variationSeries";
 import FrequencyTable from "./task/frequencyTable";
-import logo from "./logo.svg";
+import FunctionalDistribution from "./task/functionalDistribution";
 import "./App.css";
 
 export default function App() {

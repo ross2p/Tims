@@ -6,13 +6,16 @@ export default function VariationSeries({ data, setData }) {
   variationSeries.shift();
   return (
     <div>
-      {(() => {
-        let str = "Варіаційний ряд: ";
-        variationSeries
-          .sort((a, b) => a - b) // Сортуємо масив
-          .map((item) => (str += `${item}, `)); // Відображаємо елементи
-        return str;
-      })()}
+      <h3>Варіаційний ряд</h3>
+      <p className="variationSeries">
+        {(() => {
+          let str = "";
+          variationSeries
+            .sort((a, b) => a - b)
+            .map((item) => (str += `${item}, `));
+          return str;
+        })()}
+      </p>
     </div>
   );
 }
