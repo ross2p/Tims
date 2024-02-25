@@ -36,17 +36,15 @@ export default function FrequencyTable({ data }) {
     frequency: frequencies[index],
   }));
 
-  // Сортування масиву за значенням ключа
   combinedArray.sort((a, b) => a.key - b.key);
 
-  // Розпакування відсортованих значень назад у відповідні масиви
   keys = combinedArray.map((item) => item.key);
   counts = combinedArray.map((item) => item.count);
   frequencies = combinedArray.map((item) => item.frequency);
   return (
     <div className="App">
       <h3>Частатна табличка</h3>
-      <table>
+      <table className="custom-table">
         <tbody>
           <tr>
             <td className="tablefreq">Значення</td>

@@ -8,16 +8,26 @@ import "./App.css";
 
 export default function App() {
   const [data, setData] = useState([]);
-
+  const [isDiscrete, setIsDiscrete] = useState(true);
+  const toggleValue = () => {
+    setIsDiscrete((prevState) => !prevState);
+  };
   return (
     <div className="App">
-      <InputFile setEditableData={setData} />
-      {data.length > 0 && (
-        <div>
-          <Condition editableData={data} setEditableData={setData} />
-          <VariationSeries data={data} setData={setData} />
-          <FrequencyTable data={data} />
-        </div>
+      <button onClick={toggleValue}>Змінити змінну</button>
+      {isDiscrete ? (
+        <>
+          <InputFile setEditableData={setData} />
+          {data.length > 0 && (
+            <div>
+              <Condition editableData={data} setEditableData={setData} />
+              <VariationSeries data={data} setData={setData} />
+              <FrequencyTable data={data} />
+            </div>
+          )}
+        </>
+      ) : (
+        <></>
       )}
     </div>
   );
