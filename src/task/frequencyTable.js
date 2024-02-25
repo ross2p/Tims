@@ -3,6 +3,7 @@ import FunctionalDistribution from "./functionalDistribution";
 import "../App.css";
 import CastomChart from "./CastomChart";
 import LineChart from "./LineChart";
+import LineChartFunctionalDistribution from "./LineChartFunctionalDistribution";
 export default function FrequencyTable({ data }) {
   const countMap = new Map();
   const variationSeries = [...data[1]];
@@ -44,7 +45,7 @@ export default function FrequencyTable({ data }) {
   frequencies = combinedArray.map((item) => item.frequency);
   return (
     <div className="App">
-      <h3>Частоти та відносні ймовірності</h3>
+      <h3>Частатна табличка</h3>
       <table>
         <tbody>
           <tr>
@@ -71,20 +72,23 @@ export default function FrequencyTable({ data }) {
           </tr>
         </tbody>
       </table>
+      <div>
+        <div style={{ width: "50%" }}>
+          <CastomChart x={keys} y={counts} />
+        </div>
+        <div style={{ width: "50%" }}>
+          <LineChart x={keys} y={counts} />
+        </div>
+        <div style={{ width: "50%" }}>
+          <LineChartFunctionalDistribution x={keys} y={frequencies} />
+        </div>
+      </div>
       <div style={{ flexDirection: "row" }}>
         <FunctionalDistribution
           data={data}
           keys={keys}
           frequencies={frequencies}
         />
-        <div>
-          <div style={{ width: "50%" }}>
-            <CastomChart x={keys} y={counts} />
-          </div>
-          <div style={{ width: "50%" }}>
-            <LineChart x={keys} y={counts} />
-          </div>
-        </div>
       </div>
     </div>
   );
