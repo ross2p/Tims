@@ -5,10 +5,10 @@ export default function InputFile({ setEditableData }) {
   const [data, setData] = useState([]);
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    if (file.name !== "data.csv") {
-      alert("Please upload a file named data.csv");
-      return;
-    }
+    // if (file.name !== "data.csv") {
+    //   alert("Please upload a file named data.csv");
+    //   return;
+    // }
     const reader = new FileReader();
 
     reader.onload = (event) => {

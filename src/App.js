@@ -4,6 +4,7 @@ import Condition from "./task/condition";
 import VariationSeries from "./task/variationSeries";
 import FrequencyTable from "./task/frequencyTable";
 import FunctionalDistribution from "./task/functionalDistribution";
+import ConditionSecond from "./task/ConditionSecond";
 import "./App.css";
 
 export default function App() {
@@ -15,19 +16,24 @@ export default function App() {
   return (
     <div className="App">
       <button onClick={toggleValue}>Змінити змінну</button>
+      <InputFile setEditableData={setData} />
+
       {isDiscrete ? (
         <>
-          <InputFile setEditableData={setData} />
           {data.length > 0 && (
             <div>
               <Condition editableData={data} setEditableData={setData} />
               <VariationSeries data={data} setData={setData} />
-              <FrequencyTable data={data} />
+              <FrequencyTable data={data} isDiscrete={true} />
             </div>
           )}
         </>
       ) : (
-        <></>
+        <>
+          <ConditionSecond editableData={data} setEditableData={setData} />
+          <VariationSeries data={data} setData={setData} />
+          <FrequencyTable data={data} isDiscrete={false} />
+        </>
       )}
     </div>
   );

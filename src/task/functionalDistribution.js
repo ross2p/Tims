@@ -23,7 +23,7 @@ export default function FunctionalDistribution({ keys, frequencies }) {
             return <p>{str}</p>;
           })}
           <p>
-            {sumFrequencies.toFixed(2)}, {leftValue} &lt; x ≤ ∞
+            {sumFrequencies.toFixed(2)}, {leftValue} &lt; x &lt; ∞
           </p>
         </div>
       </div>
