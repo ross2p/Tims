@@ -10,6 +10,7 @@ export default function FrequencyTable({ data, isDiscrete }) {
   const rounding = 2;
   const variationSeries = [...data[1]];
   variationSeries.shift();
+  variationSeries.sort((a, b) => a - b);
   const totalElements = variationSeries.length;
   const tableElement = [];
   variationSeries.forEach((item, index) => {
@@ -92,9 +93,20 @@ export default function FrequencyTable({ data, isDiscrete }) {
       .map((item) => Math.pow(item - L, power))
       .reduce((a, b) => a + b, 0) / totalElements;
   const asymmetry = moment(3, average) / Math.pow(moment(2, average), 3 / 2);
-  const quantile = 25;
+  const [selectedNumber, setSelectedNumber] = useState(25);
+  const quantile = selectedNumber;
   var quantileValue = [];
-  console.log(totalElements);
+
+  const handleNumberChange = (event) => {
+    let value = parseFloat(event.target.value);
+    if (value < 0) {
+      value = 0;
+    } else if (value > 100) {
+      value = 100;
+    }
+    setSelectedNumber(value);
+  };
+
   do {
     if (quantileValue.length === 0) {
       quantileValue.push({
@@ -262,6 +274,13 @@ export default function FrequencyTable({ data, isDiscrete }) {
             </p>
             <p>Асиметрія: {asymmetry}</p>
             <h2>Квантилі</h2>
+            <input
+              type="number"
+              value={selectedNumber}
+              onChange={handleNumberChange}
+              min={0}
+              max={100}
+            />
             {quantileValue.map((item) => (
               <p>
                 Квантиль: {item.quantile} = {item.value}
