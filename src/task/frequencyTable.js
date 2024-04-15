@@ -8,10 +8,10 @@ import LineChartFunctionalDistribution from "./LineChartFunctionalDistribution";
 import BarChart from "./BarChart";
 export default function FrequencyTable({ data, isDiscrete }) {
   const rounding = 2;
-  const variationSeries = [...data[1]];
+  let variationSeries = [...data[1]];
   variationSeries.shift();
   variationSeries.sort((a, b) => a - b);
-  const totalElements = variationSeries.length;
+  var totalElements = variationSeries.length;
   const tableElement = [];
   variationSeries.forEach((item, index) => {
     const existingElement = tableElement.find((el) => el.value === item);
@@ -57,13 +57,20 @@ export default function FrequencyTable({ data, isDiscrete }) {
       }
     }
   });
+  variationSeries = [];
+  dataTable.forEach((item) => {
+    for (let i = 0; i < item.count; i++) {
+      variationSeries.push(item.middle);
+    }
+  });
+  totalElements = variationSeries.length;
 
-  const max = Math.max(...tableElement.map((item) => item.count));
+  const max = Math.max(...dataTable.map((item) => item.count));
   const moda = [];
 
-  tableElement.forEach((item) => {
+  dataTable.forEach((item) => {
     if (item.count === max) {
-      moda.push(item.value);
+      moda.push(item.middle);
     }
   });
   var mediana = 0;
@@ -72,26 +79,33 @@ export default function FrequencyTable({ data, isDiscrete }) {
       (variationSeries[totalElements / 2 + 1] +
         variationSeries[totalElements / 2]) /
       2;
-  } else if (totalElements > 0) {
+    console.log("variationSeries", variationSeries);
+    console.log(totalElements / 2 + 1);
+    console.log("mediana", mediana);
+  } else if (totalElements > 0 && totalElements % 2 !== 0) {
     mediana = variationSeries[Math.floor(totalElements / 2)];
   }
   const average =
-    tableElement
-      .map((item) => item.value * item.count)
+    dataTable
+      .map((item) => item.middle * item.count)
       .reduce((a, b) => a + b, 0) / totalElements;
 
-  const dev = tableElement
-    .map((item) => Math.pow(item.value - average, 2) * item.count)
+  const dev = dataTable
+    .map((item) => Math.pow(item.middle - average, 2) * item.count)
     .reduce((a, b) => a + b, 0);
   const variansa = dev / totalElements;
   const dispersia = dev / (totalElements - 1);
   const averageDeviation = Math.sqrt(dispersia);
   const standarta = Math.sqrt(variansa);
   const variation = standarta / average;
-  const moment = (power, L) =>
-    variationSeries
-      .map((item) => Math.pow(item - L, power))
-      .reduce((a, b) => a + b, 0) / totalElements;
+  const moment = (power, L) => {
+    console.log("variationSeries in moment", variationSeries);
+    return (
+      variationSeries
+        .map((item) => Math.pow(item - L, power))
+        .reduce((a, b) => a + b, 0) / totalElements
+    );
+  };
   const asymmetry = moment(3, average) / Math.pow(moment(2, average), 3 / 2);
   const [selectedNumber, setSelectedNumber] = useState(25);
   const quantile = selectedNumber;
@@ -104,6 +118,7 @@ export default function FrequencyTable({ data, isDiscrete }) {
     } else if (value > 100) {
       value = 100;
     }
+
     setSelectedNumber(value);
   };
 
@@ -236,6 +251,30 @@ export default function FrequencyTable({ data, isDiscrete }) {
               </tr>
             </tbody>
           </table>
+          <div>
+            <h3>Варіаційний ряд</h3>
+            <p className="variationSeries">
+              {(() => {
+                let str = "";
+                variationSeries
+                  .sort((a, b) => a - b)
+                  .map((item) => (str += `${item.toFixed(rounding)}, `));
+                return str;
+              })()}
+            </p>
+          </div>
+          <div style={{ width: "50%" }}>
+            <CastomChart
+              x={dataTable.map((item) => item.middle.toFixed(rounding))}
+              y={dataTable.map((item) => item.count)}
+            />
+          </div>
+          <div style={{ width: "50%" }}>
+            <LineChart
+              x={dataTable.map((item) => item.middle.toFixed(rounding))}
+              y={dataTable.map((item) => item.count)}
+            />
+          </div>
           <div style={{ width: "50%" }}>
             <BarChart
               x={dataTable.map((item) => item.middle.toFixed(rounding))}
@@ -246,7 +285,7 @@ export default function FrequencyTable({ data, isDiscrete }) {
             <p>Мода: {moda.map((item) => item.toFixed(rounding) + ",")}</p>
             <p>Медіана: {mediana.toFixed(rounding)}</p>
             <p>Середнє вибіркове: {average.toFixed(rounding)}</p>
-            <p>Девіація: {dev}</p>
+            <p>Девіація: {dev.toFixed(rounding)}</p>
             <p>Варіанса: {variansa.toFixed(rounding)}</p>
             <p>Дисперсія: {dispersia.toFixed(rounding)}</p>
             <p>
@@ -272,7 +311,15 @@ export default function FrequencyTable({ data, isDiscrete }) {
               Центральний момент третього порядку:
               {moment(3, average).toFixed(rounding)}
             </p>
-            <p>Асиметрія: {asymmetry}</p>
+            <p>Асиметрія: {asymmetry.toFixed(rounding)}</p>
+            <p>{moment(4, average)}</p>
+            <p>
+              Екцес:
+              {(
+                moment(4, average) / Math.pow(moment(2, average), 2) -
+                3
+              ).toFixed(rounding)}
+            </p>
             <h2>Квантилі</h2>
             <input
               type="number"
@@ -283,7 +330,7 @@ export default function FrequencyTable({ data, isDiscrete }) {
             />
             {quantileValue.map((item) => (
               <p>
-                Квантиль: {item.quantile} = {item.value}
+                Квантиль: {item.quantile} = {item.value.toFixed(rounding)}
               </p>
             ))}
             <p>

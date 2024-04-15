@@ -38,7 +38,7 @@ const Chart = ({ x, y }) => {
 
   return (
     <div>
-      <h2>Діаграма частот</h2>
+      <h2>Діаграма абсолютних частот</h2>
       <Line data={data} options={options} />
     </div>
   );

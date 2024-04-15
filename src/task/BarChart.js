@@ -22,6 +22,7 @@ const BarChart = ({ x, y }) => {
 
   return (
     <div>
+      <h2>Гісторграма частот</h2>
       <Bar
         data={data}
         options={{
