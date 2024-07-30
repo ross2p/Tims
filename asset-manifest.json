@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Tims/static/css/main.cbca1c5d.css",
+    "main.js": "/Tims/static/js/main.00ed5ef7.js",
+    "static/js/453.ed3810f9.chunk.js": "/Tims/static/js/453.ed3810f9.chunk.js",
+    "index.html": "/Tims/index.html",
+    "main.cbca1c5d.css.map": "/Tims/static/css/main.cbca1c5d.css.map",
+    "main.00ed5ef7.js.map": "/Tims/static/js/main.00ed5ef7.js.map",
+    "453.ed3810f9.chunk.js.map": "/Tims/static/js/453.ed3810f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cbca1c5d.css",
+    "static/js/main.00ed5ef7.js"
+  ]
+}
